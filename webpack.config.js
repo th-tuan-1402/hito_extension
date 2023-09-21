@@ -4,13 +4,11 @@ const path = require('path');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
-
 const config = {
     entry: {
         background: './src/background.js',
         popup: './src/popup.js',
-        option: './src/option.js',
-        "content-script": './src/content-script.js'
+        option: './src/option.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
