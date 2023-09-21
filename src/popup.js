@@ -17,7 +17,7 @@ import { getStorageItem, notify } from './ChromeApiHelper';
   const timeLabel = document.getElementById('timeLabel')
   setInterval(() => {
     let now = new Date()
-    timeLabel.innerText = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
+    timeLabel.innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') + ":" + now.getSeconds().toString().padStart(2, '0')
   }, 1000)
 
   await updateStatus(true)
