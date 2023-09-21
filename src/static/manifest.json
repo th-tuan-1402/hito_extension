@@ -3,7 +3,7 @@
   "manifest_version": 3,
   "version": "1.0",
   "description": "Auto performe check in/out process in time",
-  "permissions": ["cookies", "storage", "notifications"],
+  "permissions": ["alarms", "storage", "notifications"],
   "host_permissions": ["<all_urls>"],
   "icons": {
     "16": "icon16.png",
@@ -17,12 +17,6 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://*/*"],
-      "js": ["content-script.js"]
-    }
-  ],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": false
