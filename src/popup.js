@@ -107,7 +107,6 @@ async function updateStatus(shouldRefreshToken=false) {
     console.warn('checked in: ', isCheckedIn, ' checked out: ', isCheckedOut);
 
     const btnChangeStatus = document.getElementById('btnChangeStatus')
-    btnChangeStatus?.classList.toggle('hidden')
 
     if (!isCheckedIn) {
       btnChangeStatus.innerText = 'Check in'
@@ -116,10 +115,14 @@ async function updateStatus(shouldRefreshToken=false) {
       btnChangeStatus.innerText = 'Check out'
       btnChangeStatus.addEventListener('click', onCheckOut)
     } else {
+      btnChangeStatus.innerText = 'Check in'
       btnChangeStatus.setAttribute('disabled', 'disabled')
       btnChangeStatus?.classList.add('bg-gray-300', 'focus:outline-none')
       btnChangeStatus?.classList.remove('bg-green-500')
     }
+
+    // Show button
+    btnChangeStatus?.classList.remove('hidden')
   } catch(e) {
     const errMsg = document.getElementById('errMsg')
     errMsg.innerText = "⛔Đồng bộ thất bại"
