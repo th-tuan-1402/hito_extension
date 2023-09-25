@@ -27,8 +27,6 @@ async function onCheckIn() {
   let isSucceeded = false
 
   try {
-    await refreshToken()
-
     await checkin()
       .then(dataObj => {
         if (dataObj.success) {
@@ -66,8 +64,6 @@ async function onCheckOut() {
 
   let isSucceeded = false
   try {
-    await refreshToken()
-
     await checkout()
       .then(dataObj => {
         if (dataObj.success) {

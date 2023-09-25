@@ -1,4 +1,4 @@
-import { refreshToken, checkin, checkout, syncKintaiStatus } from './hitoCommonApi'
+import { checkin, checkout, syncKintaiStatus } from './hitoCommonApi'
 import { getStorageItem, notify } from './ChromeApiHelper';
 
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
@@ -33,8 +33,6 @@ async function loop(alarm) {
 
   if (await shouldCheckIn(now)) {
     try {
-      await refreshToken()
-
       // Check in
       await checkin()
         .then(dataObj => {
@@ -52,8 +50,6 @@ async function loop(alarm) {
     // Get kintai status
   } else if (await shouldCheckOut(now)) {
     try {
-      await refreshToken()
-
       // Check out
       await checkout()
         .then(dataObj => {

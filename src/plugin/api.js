@@ -1,3 +1,5 @@
+import { refreshToken } from "../hitoCommonApi";
+
 const { getStorageItem } = require("../ChromeApiHelper")
 
 export async function callGet(url, config) {
@@ -29,18 +31,55 @@ async function _callApi(method='GET', url, params, config) {
 
     const result = await fetch(url, requestConfig)
             .then(handleResponse)
-            .catch(handleError)
+            .catch(error => handleError(error, requestConfig))
 
     console.warn('END API: ', url);
 
     return result
 }
 
-async function handleError(error) {
+/**
+ * Handle request error
+ * @param {*} error 
+ */
+async function handleError(error, requestConfig) {
     console.error('    Error:', error);
-    throw error
+
+    if (error.response.status !== 401) {
+        throw error
+    }
+
+    return await retryRequest(error.response.url, requestConfig)
 }
 
+/**
+ * Retry request
+ * @param {*} url 
+ * @param {*} requestConfig 
+ * @returns 
+ */
+async function retryRequest(url, requestConfig) {
+    const attemptCount = 1 // Retry 3 times
+    while (attemptCount < 4) {
+        try {
+            await refreshToken()
+            const result = await fetch(url, requestConfig)
+
+            console.error('RETRY ', url, ' ', attemptCount, ' success');
+            return result
+        } catch {
+            // skip error
+        }
+    }
+
+    Promise.reject('RETRY '+ url + ' ' + attemptCount + ' fail')
+}
+
+/**
+ * Handle respone
+ * @param {Response} res 
+ * @returns 
+ */
 async function handleResponse(res) {
     console.warn('    Response: ', res);
 
