@@ -1,5 +1,5 @@
-import axios from './plugin/axios'
 import { getStorageItem } from './ChromeApiHelper'
+import { callGet, callPost } from './plugin/api'
 
 const HITO_DOMAIN = 'https://hito.lampart-vn.com'
 const HITO_KINTAI_DOMAIN = 'https://backend-kintai-hito.lampart-vn.com'
@@ -13,12 +13,11 @@ export default {
 
     // Check token
     async isValidToken() {
-        console.log('api isValidToken start');
 
-        const isValid = await new Promise((resolve, reject) => {
+        const isValid = await new Promise(async (resolve, reject) => {
             let isValid = false;
 
-            axios.get(this.API_CHECK_TOKEN)
+            await callGet(this.API_CHECK_TOKEN)
                 .then(res => {
                     // If It has data => token is valid
                     // Otherwise      => token is invalid
@@ -29,14 +28,12 @@ export default {
                 .catch(err => resolve(isValid))
         })
 
-        console.log('api isValidToken end');
 
         return isValid
     },
 
     // Login
     async login(params) {
-        console.log('api login start');
 
         return new Promise(async (resolve, reject) => {
             let data = {
@@ -44,20 +41,19 @@ export default {
                 data: null
             }
 
-            await axios.post(this.API_LOGIN, params)
-                        .then(res => {
-                            data = res.data
-                            resolve(data)
-                        })
-                        .catch(e => reject(e))
+            await callPost(this.API_LOGIN, params)
+                    .then(res => {
+                        data = res.data
+                        resolve(data)
+                    })
+                    .catch(e => reject(e))
         })
 
-        console.log('api login end');
+        
     },
 
     // Login kintai
     async loginKintai() {
-        console.log('api login kintai start');
 
         let params = {
             locale: 'vi',
@@ -70,50 +66,47 @@ export default {
                 data: null
             }
 
-            await axios.post(this.API_KINTAI_LOGIN, params)
-                .then(res => {
-                    data = res.data
-                    resolve(data)
-                })
-                .catch(e => reject(e))
+            await callPost(this.API_KINTAI_LOGIN, params)
+                    .then(res => {
+                        data = res.data
+                        resolve(data)
+                    })
+                    .catch(e => reject(e))
         })
 
-        console.log('api login kintai end');
     },
 
     // Get kintai status
     async getKintaiStatus() {
-        console.log('api get kintai status start');
 
-        const result = await new Promise((resolve, reject) => {
+        const result = await new Promise(async (resolve, reject) => {
             let data = {
                 success: false,
                 data: null
             }
 
-            axios.get(this.API_KINTAI_STATUS, { isKintaiSystem: true })
-                .then(res => {
-                    data = res.data
-                    resolve(data)
-                })
-                .catch(e => Promise.reject(e))
+            await callGet(this.API_KINTAI_STATUS, { isKintaiSystem: true })
+                    .then(res => {
+                        data = res.data
+                        resolve(data)
+                    })
+                    .catch(e => Promise.reject(e))
         })
 
-        console.log('api get kintai status end');
+        
         return result
     },
 
     // Change kintai status
     async changeKintaiStatus(params) {
-        console.log('api change kintai status start');
 
-        const result = await new Promise((resolve, reject) => {
+        const result = await new Promise(async (resolve, reject) => {
             let data = {
                 success: false,
                 data: null
             }
 
-            axios.post(this.API_KINTAI_STATUS, params, { isKintaiSystem: true })
+            await callPost(this.API_KINTAI_STATUS, params, { isKintaiSystem: true })
                 .then(res => {
                     data = res.data
                     resolve(data)
@@ -129,7 +122,6 @@ export default {
                 })
         })
 
-        console.log('api change kintai status end');
         return result
     }
 }
