@@ -13,11 +13,11 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
     {
       periodInMinutes: 1,
     },
-    () => console.warn("create perodic task successfully")
+    () => console.warn("Create perodic task successfully")
   );
 
   // Add timer event handler
-  chrome.alarms.onAlarm.addListener(appLoop)
+  chrome.alarms.onAlarm.addListener(loop)
 
   // Add message sending event handler
   chrome.runtime.onMessage.addListener(request => {
@@ -27,8 +27,9 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   });
 })
 
-async function appLoop(alarm) {
+async function loop(alarm) {
   let now = new Date()
+  console.warn('TICK!!!');
 
   if (await shouldCheckIn(now)) {
     try {
