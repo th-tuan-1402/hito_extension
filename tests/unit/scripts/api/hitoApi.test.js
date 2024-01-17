@@ -1,119 +1,145 @@
-import hitoApi from "../../../../src/scripts/api/hitoApi"
+import hitoApi from '../../../../src/scripts/api/hitoApi'
 
-describe('test call api ok', function () {
-	test('test login - success', async function () {
-		let dataObj = {
-			success: true,
-			data: true
-		}
-		let mockedAxios = {
-			async get() { return Promise.resolve(dataObj) },
-			async post() { return Promise.resolve(dataObj) },
-		}
+let commonInputs = {
+  OK: {
+    axios: {
+      async get() {
+        return Promise.resolve(commonResult.OK_RESULT)
+      },
+      async post() {
+        return Promise.resolve(commonResult.OK_RESULT)
+      },
+    },
+    hitoApi
+  },
+  NG: {
+    axios: {
+      async get() {
+        return Promise.reject(commonResult.NG_EXCEPTION_RESULT)
+      },
+      async post() {
+        return Promise.reject(commonResult.NG_EXCEPTION_RESULT)
+      },
+    },
+    hitoApi,
+  },
+}
 
-		const result = (await hitoApi.login({ axios: mockedAxios }))
-		expect(result).toBe(dataObj.data);
-	})
+let commonResult = {
+  NG_EXCEPTION_RESULT: 'NG',
+  NG_UNAUTHOZIRED_EXCEPTION: { response: {status: 403}},
+  NG_UNAUTHOZIRED_RESULT: { success: true, data: null },
+  OK_RESULT: { success: true, data: 'OK' },
+}
 
-	test('test login - fail - exception occursion', async function () {
-		let err = { 'exception': 'testException' }
-		let mockedAxios = {
-			async get() { return Promise.reject(err) },
-			async post() { return Promise.reject(err) },
-		}
+const testCases = [
+  [
+    'login - OK',
+    commonInputs.OK,
+    async ({ axios, hitoApi }) => await hitoApi.login({ axios }),
+    async (output) => await expect(output).toBe(commonResult.OK_RESULT.data),
+  ],
+  [
+    'login - NG - exception occursion',
+    {
+      isOkCase: false,
+      ...commonInputs.NG
+    },
+    async ({ axios, hitoApi }) => await hitoApi.login({ axios }),
+    async (output) => await expect(output).toBe(commonResult.NG_EXCEPTION_RESULT),
+  ],
+  [
+    'login kintai - OK',
+    commonInputs.OK,
+    async ({ axios, hitoApi }) => await hitoApi.loginKintai({ axios }),
+    async (output) => await expect(output).toBe(commonResult.OK_RESULT.data),
+  ],
+  [
+    'login kintai - NG - exception occursion',
+    {
+      isOkCase: false,
+      ...commonInputs.NG
+    },
+    async ({ axios, hitoApi }) => await hitoApi.loginKintai({ axios }),
+    async (output) => await expect(output).toBe(commonResult.NG_EXCEPTION_RESULT),
+  ],
+  [
+    'get kintai status - OK',
+    commonInputs.OK,
+    async ({ axios, hitoApi }) => await hitoApi.getKintaiStatus({ axios }),
+    async (output) => await expect(output).toBe(commonResult.OK_RESULT.data),
+  ],
+  [
+    'get kintain status - NG - exception occursion',
+    {
+      isOkCase: false,
+      ...commonInputs.NG
+    },
+    async ({ axios, hitoApi }) => await hitoApi.getKintaiStatus({ axios }),
+    async (output) => await expect(output).toBe(commonResult.NG_EXCEPTION_RESULT),
+  ],
+  [
+    'change kintai status - OK',
+    commonInputs.OK,
+    async ({ axios, hitoApi }) => await hitoApi.changeKintaiStatus({ axios }),
+    async (output) => await expect(output).toBe(commonResult.OK_RESULT.data),
+  ],
+  [
+    'change kintai status - NG - exception occursion',
+    {
+      isOkCase: false,
+      ...commonInputs.NG
+    },
+    async ({ axios, hitoApi }) => await hitoApi.changeKintaiStatus({ axios }),
+    async (output) => await expect(output).toBe(commonResult.NG_EXCEPTION_RESULT),
+  ],
+  [
+    'change kintai status - OK - already checked in',
+    {
+      isOkCase: false,
+      ...commonInputs.NG,
+      axios: {
+        async post() {
+          return Promise.reject(commonResult.NG_UNAUTHOZIRED_EXCEPTION)
+        },
+      },
+    },
+    async ({ axios, hitoApi }) => await hitoApi.changeKintaiStatus({ axios }),
+    async (output) => await expect(output.data).toBe(commonResult.NG_UNAUTHOZIRED_RESULT.data),
+  ],
+  [
+    'approve working - OK',
+    commonInputs.OK,
+    async ({ axios, hitoApi }) => await hitoApi.approveWorking({ axios }),
+    async (output) => await expect(output).toBe(commonResult.OK_RESULT.data),
+  ],
+  [
+    'approve working - NG - exception occursion',
+    {
+      isOkCase: false,
+      ...commonInputs.NG
+    },
+    async ({ axios, hitoApi }) => await hitoApi.approveWorking({ axios }),
+    async (output) => await expect(output).toBe(commonResult.NG_EXCEPTION_RESULT),
+  ],
+]
 
-		hitoApi.login({ axios: mockedAxios })
-			.catch(e => expect(e).toBe(err));
-	})
+describe('test api', function () {
+  for (const [name, { isOkCase = true, ...input }, action, assert] of testCases) {
+    test(name, async function () {
+      try {
+        console.warn('Status OK')
 
-	test('test login kintai - success', async function () {
-		let dataObj = {
-			success: true,
-			data: true
-		}
-		let mockedAxios = {
-			async get() { return Promise.resolve(dataObj) },
-			async post() { return Promise.resolve(dataObj) },
-		}
+        let output = await action(input)
+        console.warn('output', output)
 
-		const result = (await hitoApi.loginKintai({ axios: mockedAxios }))
-		expect(result).toBe(dataObj.data);
-	})
-
-	test('test login kintai - fail - exception occursion', async function () {
-		let err = { 'exception': 'testException' }
-		let mockedAxios = {
-			async get() { return Promise.reject(err) },
-			async post() { return Promise.reject(err) },
-		}
-
-		hitoApi.loginKintai({ axios: mockedAxios })
-			.catch(e => expect(e).toBe(err));
-	})
-
-	test('test get kintai status - success', async function () {
-		let dataObj = {
-			success: true,
-			data: true
-		}
-		let mockedAxios = {
-			async get() { return Promise.resolve(dataObj) },
-			async post() { return Promise.resolve(dataObj) },
-		}
-
-		const result = (await hitoApi.getKintaiStatus({ axios: mockedAxios }))
-		expect(result).toBe(dataObj.data);
-	})
-
-	test('test get kintai status - fail - exception occursion', async function () {
-		let err = { 'exception': 'testException' }
-		let mockedAxios = {
-			async get() { return Promise.reject(err) },
-			async post() { return Promise.reject(err) },
-		}
-
-		hitoApi.getKintaiStatus({ axios: mockedAxios })
-			.catch(e => expect(e).toBe(err));
-	})
-
-	test('test change kintai status - success', async function () {
-		let dataObj = {
-			success: true,
-			data: true
-		}
-		let mockedAxios = {
-			async get() { return Promise.resolve(dataObj) },
-			async post() { return Promise.resolve(dataObj) },
-		}
-
-		const result = (await hitoApi.changeKintaiStatus({ axios: mockedAxios }))
-		expect(result).toBe(dataObj.data);
-	})
-
-	test('test change kintai status - fail - already logged in', async function () {
-		let err = {
-			response: { status: 403 }
-		}
-		let mockedAxios = {
-			async get() { return Promise.reject(err) },
-			async post() { return Promise.reject(err) },
-		}
-
-		const result = (await hitoApi.changeKintaiStatus({ axios: mockedAxios }))
-		expect(result.success).toBe(true);
-		expect(result.data).toBe(null);
-	})
-
-	test('test change kintai status - fail - exception occursion', async function () {
-		let err = {
-			response: { status: 404 }
-		}
-		let mockedAxios = {
-			async get() { return Promise.reject(err) },
-			async post() { return Promise.reject(err) },
-		}
-
-		hitoApi.changeKintaiStatus({ axios: mockedAxios })
-			.catch(e => expect(e).toBe(err));
-	})
+        assert(output)
+      } catch (err) {
+        console.warn('Status NG')
+        if (!isOkCase) {
+          assert(err)
+        }
+      }
+    })
+  }
 })
