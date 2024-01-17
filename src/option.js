@@ -27,6 +27,13 @@ import ChromeHelper from "./helpers/ChromeHelper";
         chkIsAutoCheckOut?.setAttribute('checked', 'checked')
     }
 
+    let chkIsAutoConfirmWorkingTime = document.getElementById('isAutoConfirmWorkingTime')
+    let isAutoConfirmWorkingTime = (await chromeHelper.getStorageItem('isAutoConfirmWorkingTime')) ?? false
+    if (isAutoConfirmWorkingTime) {
+        chkIsAutoConfirmWorkingTime?.setAttribute('checked', 'checked')
+    }
+    onChangeIsAutoCheckOut(isAutoCheckOut)
+
     // Add event listeners
     usernameInp?.addEventListener('change', async (e) => {
         await chromeHelper.setStorageItem({ username: usernameInp.value })
@@ -44,5 +51,21 @@ import ChromeHelper from "./helpers/ChromeHelper";
     chkIsAutoCheckOut?.addEventListener('change', async () => {
         const value = chkIsAutoCheckOut.checked
         await chromeHelper.setStorageItem({ isAutoCheckOut: value })
+        onChangeIsAutoCheckOut(value)
     })
+
+    chkIsAutoConfirmWorkingTime?.addEventListener('change', async () => {
+        const value = chkIsAutoConfirmWorkingTime.checked
+        await chromeHelper.setStorageItem({ isAutoConfirmWorkingTime: value })
+    })
+
+    function onChangeIsAutoCheckOut(value) {
+        // Change auto confirm working time button value
+        if (value == true) {
+            chkIsAutoConfirmWorkingTime.parentElement.classList.remove('hidden')
+        } else {
+            chkIsAutoConfirmWorkingTime.parentElement.classList.add('hidden')
+            chkIsAutoConfirmWorkingTime.value = false
+        }
+    }
 })()

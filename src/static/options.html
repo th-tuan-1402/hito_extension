@@ -1,41 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Option</title>
-    <link href="./style/tailwind.min.css" rel="stylesheet">
-</head>
+    <link href="./style/tailwind.min.css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
     <form action="#" class="p-2">
-        <div class="mb-6">
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User name</label>
-            <input type="username" id="username"
-                class="form_input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="LPXXX" required>
-        </div>
-        <div class="mb-6">
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-            <input type="password" id="password"
-                class="form_input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="•••••••••" required>
-        </div>
-        <div class="flex items-center mb-4">
-            <input id="isAutoCheckIn" type="checkbox" value="1"
-                class="form_input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            <label for="isAutoCheckIn" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Auto
-                checkin</label>
-        </div>
-        <div class="flex items-center mb-4">
-            <input id="isAutoCheckOut" type="checkbox" value="1"
-                class="form_input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            <label for="isAutoCheckOut" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Auto
-                checkout</label>
-        </div>
+      <div class="mb-6">
+        <label
+          for="username"
+          class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          >User name</label
+        >
+        <input
+          type="username"
+          id="username"
+          class="form_input block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          placeholder="LPXXX"
+          required
+        />
+      </div>
+      <div class="mb-6">
+        <label
+          for="password"
+          class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          class="form_input block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          placeholder="•••••••••"
+          required
+        />
+      </div>
+      <div class="mb-4 flex items-center">
+        <input
+          id="isAutoCheckIn"
+          type="checkbox"
+          value="1"
+          class="form_input h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+        />
+        <label
+          for="isAutoCheckIn"
+          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >Auto checkin</label
+        >
+      </div>
+      <div class="mb-4 flex items-center">
+        <input
+          id="isAutoCheckOut"
+          type="checkbox"
+          value="1"
+          class="form_input h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+        />
+        <label
+          for="isAutoCheckOut"
+          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >Auto checkout</label
+        >
+      </div>
+      <div class="mb-4 ml-5 flex items-center">
+        <input
+          id="isAutoConfirmWorkingTime"
+          type="checkbox"
+          value="1"
+          class="form_input h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+        />
+        <label
+          for="isAutoConfirmWorkingTime"
+          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >Confirm working time</label
+        >
+      </div>
     </form>
-</body>
-<script src="./option.js"></script>
-
+  </body>
+  <script src="./option.js"></script>
 </html>

@@ -137,6 +137,18 @@ async function onCheckOut() {
     chromeHelper.notify('⛔Error', 'Fail to check out')
   }
 
+  if (isSucceeded) {
+    try {
+        let isAutoConfirmWorkingTime = await chromeHelper.getStorageItem('isAutoConfirmWorkingTime')
+        if (isAutoConfirmWorkingTime) {
+            await controller.approveWorking()
+        }
+    } catch (e) {
+        // Warning
+        chromeHelper.notify('⚠️Warnning', 'Fail to approve working time')
+    }
+  }
+
   // Sync kintai status
   if (isSucceeded) {
     try {

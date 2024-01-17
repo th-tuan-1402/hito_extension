@@ -7,6 +7,7 @@ export default {
     API_LOGIN: HITO_DOMAIN + '/backend/v1/login',
     API_KINTAI_LOGIN: HITO_KINTAI_DOMAIN + '/api/v1/user/login',
     API_KINTAI_STATUS: HITO_KINTAI_DOMAIN + '/api/v1/timestamp/clock',
+    API_KINTAI_APPROVE_WOKING: HITO_KINTAI_DOMAIN + "/api/v1/timestamp/working-time/works/approve-working",
 
     // Login
     async login({ axios }, params) {
@@ -82,5 +83,25 @@ export default {
                     reject(err)
                 })
         })
-    }
+    },
+
+    // Aprove wokring time
+    async approveWorking({ axios }, params) {
+        return await new Promise((resolve, reject) => {
+        let data = {
+            success: false,
+            data: null,
+        };
+
+        axios
+            .post(this.API_KINTAI_APPROVE_WOKING, params, { isKintaiSystem: true })
+            .then((res) => {
+            data = res.data;
+            resolve(data);
+            })
+            .catch((err) => {
+            reject(err);
+            });
+        });
+    },
 }

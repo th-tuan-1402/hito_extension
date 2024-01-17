@@ -172,4 +172,23 @@ export default class PopupController {
 
         return true
     }
+  
+    /**
+     * Approve working time
+     * @returns
+     */
+    async approveWorking() {
+        let params = {
+            date_log: DateUtil.formatHyphen(DateUtil.getCurrentDate()),
+            employee_id: '367',
+            prev_time_log: null,
+            button_status: 'button_accept',
+        }
+
+        let dataObj = await this.api.approveWorking(this, params)
+        if (dataObj.success) {
+        }
+
+        return dataObj
+    }
 }
